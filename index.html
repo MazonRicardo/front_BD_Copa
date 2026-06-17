@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copa do Mundo 2026</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            margin-right: 5px;
+            background-color: #fff;
+        }
+        .tab.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .content {
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        .selecoes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .jogadores-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .jogador-card {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Copa do Mundo 2026</h1>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="partidas">Partidas</div>
+        <div class="tab" data-tab="selecoes">Seleções</div>
+    </div>
+
+    <!-- Partidas Section -->
+    <div id="partidas" class="content active">
+        <h2>Próximas Partidas</h2>
+        <div id="partidas-list"></div>
+    </div>
+
+    <!-- Seleções Section -->
+    <div id="selecoes" class="content">
+        <h2>Seleções</h2>
+        <div id="selecoes-grid" class="selecoes-grid"></div>
+    </div>
+
+    <!-- Modal for Team Details -->
+    <div id="team-modal" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModal()" style="float: right; cursor: pointer; font-size: 28px;">&times;</span>
+            <h2 id="modal-team-name"></h2>
+            <div id="modal-jogadores" class="jogadores-container"></div>
+        </div>
+    </div>
+
+    <script src="CONTROLER/partidas_cont.js"></script>
+    <script src="CONTROLER/selecao_cont.js"></script>
+    <script src="CONTROLER/jogadores_cont.js"></script>
+    <script src="SERVICE/partidas_serv.js"></script>
+    <script src="SERVICE/selecoes_serv.js"></script>
+    <script>
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            loadPartidas();
+            loadSelecoes();
+        });
+
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    document.querySelectorAll('.content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('team-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
